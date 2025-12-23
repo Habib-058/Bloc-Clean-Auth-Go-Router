@@ -2,6 +2,7 @@ import 'dart:async';
 
 
 import 'package:bloc_auth_go_router/features/auth/presentation/pages/product.dart';
+import 'package:bloc_auth_go_router/features/auth/presentation/pages/productDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -60,6 +61,20 @@ class AppRouter {
           return Product(productId: state.pathParameters['productId']!);
         },
       ),
+      GoRoute(
+        path: "${Routes.productDetails}/:productId/:productName/:productPrice" ,
+        builder: (context, state) {
+          String? productId = state.pathParameters['productId'];
+          String? productName = state.pathParameters['productName'];
+          String? productPrice = state.pathParameters['productPrice'];
+          return ProductDetails(
+            productId: int.parse(productId!),
+            productName: productName!,
+            productPrice: double.parse(productPrice!)
+
+          );
+        },
+      ),
     ],
   );
 }
@@ -78,4 +93,5 @@ class Routes {
   static const String login = '/login';
   static const String home = '/home';
   static const String product = '/product';
+  static const String productDetails = '/product/details';
 }

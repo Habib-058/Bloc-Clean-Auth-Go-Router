@@ -43,7 +43,10 @@ class HomePage extends StatelessWidget {
                   Text('Name: ${state.userEntity.name}'),
                   ElevatedButton(onPressed: () {
                     context.push("${Routes.product}/123");
-                  }, child: Text("Go to Product"))
+                  }, child: Text("Go to Product")),
+                  ElevatedButton(onPressed: () {
+                    context.push("${Routes.productDetails}/123/Sample%20Product/49.99");
+                  }, child: Text("Go to Product Details")),
                 ],
               ),
             );

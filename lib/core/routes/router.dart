@@ -1,6 +1,7 @@
 import 'dart:async';
 
 
+import 'package:bloc_auth_go_router/features/auth/presentation/pages/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,41 +17,47 @@ class AppRouter {
   AppRouter({required this.authBloc});
 
   GoRouter get router => GoRouter(
-    initialLocation: '/splash',
+    initialLocation: Routes.splash,
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
       final authState = authBloc.state;
 
-      final isGoingToLogin = state.matchedLocation == '/login';
-      final isGoingToSplash = state.matchedLocation == '/splash';
+      final isGoingToLogin = state.matchedLocation == Routes.login;
+      final isGoingToSplash = state.matchedLocation == Routes.splash;
 
       if (authState is AuthUnauthenticated || authState is AuthError) {
-        return isGoingToLogin ? null : '/login';
+        return isGoingToLogin ? null : Routes.login;
       }
       if (authState is AuthAuthenticated) {
         if (isGoingToLogin || isGoingToSplash) {
-          return '/home';
+          return Routes.home;
         }
       }
       return null;
     },
     routes: [
       GoRoute(
-        path: '/splash',
+        path: Routes.splash,
         builder: (context, state) {
           return SplashPage();
         },
       ),
       GoRoute(
-        path: '/login',
+        path: Routes.login,
         builder: (context, state) {
           return LoginPage();
         },
       ),
       GoRoute(
-        path: '/home',
+        path: Routes.home,
         builder: (context, state) {
           return HomePage();
+        },
+      ),
+      GoRoute(
+        path: '${Routes.product}/:productId',
+        builder: (context, state) {
+          return Product(productId: state.pathParameters['productId']!);
         },
       ),
     ],
@@ -64,4 +71,11 @@ class GoRouterRefreshStream extends ChangeNotifier {
   }
 
   late final StreamSubscription _subscription;
+}
+
+class Routes {
+  static const String splash = '/splash';
+  static const String login = '/login';
+  static const String home = '/home';
+  static const String product = '/product';
 }

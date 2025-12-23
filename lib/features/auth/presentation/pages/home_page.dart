@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/routes/router.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -39,6 +41,9 @@ class HomePage extends StatelessWidget {
                   Text('Email: ${state.userEntity.email}'),
                   SizedBox(height: 16,),
                   Text('Name: ${state.userEntity.name}'),
+                  ElevatedButton(onPressed: () {
+                    context.push("${Routes.product}/123");
+                  }, child: Text("Go to Product"))
                 ],
               ),
             );

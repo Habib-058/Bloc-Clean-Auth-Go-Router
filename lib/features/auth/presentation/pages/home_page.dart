@@ -1,4 +1,4 @@
-
+import 'package:bloc_auth_go_router/features/auth/domain/entity/cart_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -14,15 +14,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-          actions: [IconButton(onPressed: (){
-            context.read<AuthBloc>().add(AuthLogoutRequested());
-          }, icon: Icon(Icons.logout))],
-
-        ),
-        body: BlocBuilder<AuthBloc,AuthState>(builder: (context,state){
-          if(state is AuthAuthenticated){
+      appBar: AppBar(
+        title: Text('Home'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<AuthBloc>().add(AuthLogoutRequested());
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
+      body: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthAuthenticated) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -32,29 +37,47 @@ class HomePage extends StatelessWidget {
                     size: 100,
                     color: Colors.green,
                   ),
-                  SizedBox(height: 24,),
-                  Text('Welcome',style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 24),
+                  Text(
+                    'Welcome',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 16),
                   Text('Email: ${state.userEntity.email}'),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 16),
                   Text('Name: ${state.userEntity.name}'),
-                  ElevatedButton(onPressed: () {
-                    context.push("${Routes.product}/123");
-                  }, child: Text("Go to Product")),
-                  ElevatedButton(onPressed: () {
-                    context.push("${Routes.productDetails}/123/Sample%20Product/49.99");
-                  }, child: Text("Go to Product Details")),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push("${Routes.product}/123");
+                    },
+                    child: Text("Go to Product"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push(
+                        "${Routes.productDetails}/123/Sample%20Product/49.99",
+                      );
+                    },
+                    child: Text("Go to Product Details"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      final cartProduct = CartEntity(
+                        id: 123,
+                        name: "Sample%20Product",
+                        price: 49.99,
+                      );
+                      context.push(Routes.cart, extra: cartProduct);
+                    },
+                    child: Text("Go to Product Details"),
+                  ),
                 ],
               ),
             );
           }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        })
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }
